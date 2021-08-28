@@ -56,8 +56,3 @@ i=$(echo "scale=0; ($c-$d)" | bc -l)
 # printf "%(%Y-%m-%d)T\t%(%T)T\t$a\t$b\t$e %%\t$f ppm\t$g ppm\t$h ppm\t$c\t-$d\t$i\n" >> /home/umbrel/scripts/bos_accounting.log
 #
 printf "%(%Y-%m-%d)T    %(%T)T    "$a"    "$b"    "$e"%%    "$f"ppm    "$g"ppm    "$h"ppm    "$c"    -"$d"    "$i"\n" >> /home/umbrel/scripts/bos_accounting.log
-
-#
-# Print year, time, local channel balance, forwarded amount, %  routed, ppm, amount fees earned
-# printf "%(%Y-%m-%d)T\t%(%T)T\t$a\t$b\t$c%%\t$e ppm\t$d\n" >> /home/umbrel/scripts/bos_accounting.log
-# End

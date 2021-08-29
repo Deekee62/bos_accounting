@@ -34,7 +34,7 @@ d_paid="$(boss chart-fees-paid  --days 7 | /bin/grep 'Total:' | /usr/bin/awk '{p
 #
 # Get the total amount of onchain fees paid in the last 7 days
 #
-e_chainpaid="$(bos chart-chain-fees  --days 7 | grep 'Total:' | awk '{print $10}' | sed -r -e 's/[[:cntrl:]]\[[0-9]{1,3}m//g' -e 's/\n/ /g' | sed 's/0.//' | tr -d '\r')"
+e_chainpaid="$(boss chart-chain-fees  --days 7 | grep 'Total:' | awk '{print $10}' | sed -r -e 's/[[:cntrl:]]\[[0-9]{1,3}m//g' -e 's/\n/ /g' | sed 's/0.//' | tr -d '\r')"
 #
 # Calculate the percentage of the forwared sats compared to the local channel balance for the last 7 days
 f_pcrouted=$(echo "scale=2; 100/($a_local/$b_routed)" | /usr/bin/bc -l)

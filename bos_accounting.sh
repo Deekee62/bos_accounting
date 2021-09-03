@@ -21,7 +21,7 @@
 #Replace by actual path to bos if you run in docker
 
 BOS=`which bos`
-if [ ! -f $BOS ]
+if [ "$BOS" == "" ] || [ ! -f $BOS ]
 then
 	# Potential Docker Installation
 	BOS="docker run -it --rm --network=host --add-host=umbrel.local:10.21.21.9 -v $HOME/.bos:/home/node/.bos -v $HOME/umbrel/lnd:/home/node/.lnd:ro alexbosworth/balanceofsatoshis"

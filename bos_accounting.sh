@@ -9,9 +9,12 @@
 # BOS (Balance of Satoshi) needs to be installed
 # bc needs to be installed (sudo apt-get bc)
 #
+# Add the following in crontab to run regulary. Change path as appropriate
+# 55 23 * * * ~/bos_accounting/bos_accounting.sh >> ~/routed.txt 2>&1
 # Version: 0.0.5
 # Author: Dirk Krienbuehl https://t.me/Deekee62
 # Additions : VS https://t.me/BhaagBoseDk : Removing lncli and icreasing compatibilities with other installations.
+#
 # ------------------------------------------------------------------------------------------------
 #
 

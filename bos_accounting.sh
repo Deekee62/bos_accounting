@@ -13,55 +13,50 @@
 # alias boss='docker run --rm --network="host" --add-host=umbrel.local:192.168.1.111 -v \
 # HOME/.bos:/home/node/.bos -v $HOME/umbrel/lnd:/home/node/.lnd:ro alexbosworth/balanceofsatoshis'
 #
-# Version: 0.0.4
+# Version: 0.0.5
 # Author: Dirk Krienbuehl https://t.me/Deekee62
+# Additions : VS https://t.me/BhaagBoseDk
 # ------------------------------------------------------------------------------------------------
 #
-# Source the aliases defined
-source ~/.bash_aliases
-shopt -s expand_aliases
+
+#Replace by actual path to bos if you run in docker
+BOS=`which bos`
+
 # Get local channel balance
-a_local="$(docker exec lnd lncli channelbalance | /usr/bin/jq -r '.balance')"
+a_local="$($BOS balance --detailed | grep offchain |  awk -F : '{gsub(/^[ \t]+/, "", $2);print $2}' | sed 's/\.//g' | sed -r -e 's/[[:cntrl:]]\[[0-9]{1,3}m//g' -e 's/\n/ /g' | tr -d '\r')"
 #
 # Get total forwarded amount of sats for the last 7 days
-b_routed="$(boss chart-fees-earned --forwarded --days 7 | /bin/grep 'Total:' | /usr/bin/awk '{print $8}' | /bin/sed -r -e 's/[[:cntrl:]]\[[0-9]{1,3}m//g' -e 's/\n/ /g' | /bin/sed 's/0.//' | tr -d '\r')"
+b_routed="$($BOS chart-fees-earned --forwarded --days 7 | /bin/grep 'Total:' | /usr/bin/awk '{print $8}' | /bin/sed -r -e 's/[[:cntrl:]]\[[0-9]{1,3}m//g' -e 's/\n/ /g' -e 's/^0.//' | tr -d '\r')"
 #
 # Get the total amount of fees earned in the last 7 days
-c_earned="$(boss chart-fees-earned  --days 7 | /bin/grep 'Total:' | /usr/bin/awk '{print $8}' | /bin/sed -r -e 's/[[:cntrl:]]\[[0-9]{1,3}m//g' -e 's/\n/ /g' | /bin/sed 's/0.//' | tr -d '\r')"
+c_earned="$($BOS chart-fees-earned  --days 7 | /bin/grep 'Total:' | /usr/bin/awk '{print $8}' | /bin/sed -r -e 's/[[:cntrl:]]\[[0-9]{1,3}m//g' -e 's/\n/ /g' -e s'/^0.//' | tr -d '\r')"
 #
 # Get the total amount of fees paid in the last 7 days
-d_paid="$(boss chart-fees-paid  --days 7 | /bin/grep 'Total:' | /usr/bin/awk '{print $9}' | /bin/sed -r -e 's/[[:cntrl:]]\[[0-9]{1,3}m//g' -e 's/\n/ /g' | /bin/sed 's/0.//' | tr -d '\r')"
+d_paid="$($BOS chart-fees-paid  --days 7 | /bin/grep 'Total:' | /usr/bin/awk '{print $9}' | /bin/sed -r -e 's/[[:cntrl:]]\[[0-9]{1,3}m//g' -e 's/\n/ /g' -e 's/^0.//' | tr -d '\r')"
 #
 # Get the total amount of onchain fees paid in the last 7 days
 #
-e_chainpaid="$(boss chart-chain-fees  --days 7 | grep 'Total:' | awk '{print $10}' | sed -r -e 's/[[:cntrl:]]\[[0-9]{1,3}m//g' -e 's/\n/ /g' | sed 's/0.//' | tr -d '\r')"
+e_chainpaid="$($BOS chart-chain-fees  --days 7 | grep 'Total:' | awk '{print $10}' | sed -r -e 's/[[:cntrl:]]\[[0-9]{1,3}m//g' -e 's/\n/ /g' -e 's/^0.//' |  tr -d '\r')"
 #
 # Calculate the percentage of the forwared sats compared to the local channel balance for the last 7 days
 f_pcrouted=$(echo "scale=2; 100/($a_local/$b_routed)" | /usr/bin/bc -l)
 #
 # Calculate the ppm of the fees earned compared to the local channel balance for the last 7 days
-g=$(echo "scale=0; 1000000/($a_local/$c_earned)" | bc -l)
+g_ppmearned=$(echo "scale=0; 1000000/($a_local/$c_earned)" | bc -l)
 #
 # Calculate the ppm of the fees paid compared to the local channel balance for the last 7 days
 #
-h=$(echo "scale=0; 1000000/($a_local/$d_paid)" | bc -l)
+h_ppmpaid=$(echo "scale=0; 1000000/($a_local/$d_paid)" | bc -l)
 #
 # Calculate the ppm of the net fees paid compared to the local channel balance for the last 7 days
 #
-i=$(echo "scale=0; 1000000/($a_local/($c_earned-$d_paid-$e_chainpaid))" | bc -l)
+i_ppmnet=$(echo "scale=0; 1000000/($a_local/($c_earned-$d_paid-$e_chainpaid))" | bc -l)
 #
 # Calculate the sats of net fees earned
 #
-k=$(echo "scale=0; ($c_earned-$d_paid-$e_chainpaid)" | bc -l)
+k_netearned=`printf "%08d" $(echo "scale=0; ($c_earned-$d_paid-$e_chainpaid)" | bc -l)`
 #
-# Print year, time, local channel balance, forwarded amount, % forwarded, fees earned ppm, fees paid ppm, fees net ppm, amount fees earned, amount fees paid, amount fees net
+# Print year, time, local channel balance, forwarded amount, % forwarded, fees earned ppm, fees paid ppm, fees net ppm, amount fees earned, amount fees paid, amount chain fees, amount fees net
 #
-# printf "%(%Y-%m-%d)T\t%(%T)T\t$a_local\t$b_routed\t$f_pcrouted %%\t$f ppm\t$g ppm\t$h ppm\t$c_earned\t-$d_paid\t$i\n" >> /home/umbrel/scripts/bos_accounting.log
-#
-printf "%(%Y-%m-%d)T    %(%T)T    "$a_local"    "$b_routed"    "$f_pcrouted"%%    "$g"ppm    "$h"ppm    "$i"ppm    "$c_earned"    -"$d_paid"    "$k"\n" >> /home/umbrel/scripts/bos_accounting.log
-
-#
-# Print year, time, local channel balance, forwarded amount, %  routed, ppm, amount fees earned
-# printf "%(%Y-%m-%d)T\t%(%T)T\t$a\t$b\t$c%%\t$e ppm\t$d\n" >> /home/umbrel/scripts/bos_accounting.log
-# End
+printf "%(%Y-%m-%d)T    %(%T)T    "$a_local"    "$b_routed"    "$f_pcrouted"%%    "$g_ppmearned"ppm    "$h_ppmpaid"ppm    "$i_ppmnet"ppm    "$c_earned"    -"$d_paid"    -"$e_chainpaid"    "$k_netearned"\n"
 

@@ -1,3 +1,8 @@
+fork of @Deekee62's repo "bos_accounting"
+
+Changes to remove lncli dependency
+Change to include bos path for customisation
+
 ### My first repository!
 
 I'm deekee62/Dirk Krienbühl and here it's my first GitHub repository.

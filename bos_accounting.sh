@@ -24,7 +24,7 @@ BOS=`which bos`
 if [ "$BOS" == "" ] || [ ! -f $BOS ]
 then
 	# Potential Docker Installation
-	BOS="docker run -it --rm --network=host --add-host=umbrel.local:10.21.21.9 -v $HOME/.bos:/home/node/.bos -v $HOME/umbrel/lnd:/home/node/.lnd:ro alexbosworth/balanceofsatoshis"
+	BOS="docker run --rm --network=host --add-host=umbrel.local:10.21.21.9 -v $HOME/.bos:/home/node/.bos -v $HOME/umbrel/lnd:/home/node/.lnd:ro alexbosworth/balanceofsatoshis"
 fi
 #BOS=user_specific_path for bos
 

@@ -4,23 +4,26 @@
 # to the local channel balance for the last 7 days...
 #
 # It can be executed as a daily cron job to give a nice history
-# The results are written to /home/umbrel/scripts/routed_percentage.log
+# The results are written to  stdout which can be redirected to a log file by cron.
 #
-# BOS (Balance of Satoshi) needs to be installed (docker version)
+# BOS (Balance of Satoshi) needs to be installed
 # bc needs to be installed (sudo apt-get bc)
-# A new alias needs to be defined in ~/.bash_aliases
-#
-# alias boss='docker run --rm --network="host" --add-host=umbrel.local:192.168.1.111 -v \
-# HOME/.bos:/home/node/.bos -v $HOME/umbrel/lnd:/home/node/.lnd:ro alexbosworth/balanceofsatoshis'
 #
 # Version: 0.0.5
 # Author: Dirk Krienbuehl https://t.me/Deekee62
-# Additions : VS https://t.me/BhaagBoseDk
+# Additions : VS https://t.me/BhaagBoseDk : Removing lncli and icreasing compatibilities with other installations.
 # ------------------------------------------------------------------------------------------------
 #
 
 #Replace by actual path to bos if you run in docker
+
 BOS=`which bos`
+if [ ! -f $BOS ]
+then
+	# Potential Docker Installation
+	BOS="docker run -it --rm --network=host --add-host=umbrel.local:10.21.21.9 -v $HOME/.bos:/home/node/.bos -v $HOME/umbrel/lnd:/home/node/.lnd:ro alexbosworth/balanceofsatoshis"
+fi
+#BOS=user_specific_path for bos
 
 # Get local channel balance
 a_local="$($BOS balance --detailed | grep offchain |  awk -F : '{gsub(/^[ \t]+/, "", $2);print $2}' | sed 's/\.//g' | sed -r -e 's/[[:cntrl:]]\[[0-9]{1,3}m//g' -e 's/\n/ /g' | tr -d '\r')"

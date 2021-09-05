@@ -19,7 +19,13 @@
 
 #Replace by actual path to bos if you run in docker
 
-BOS=`which bos`
+if [ -f $HOME/.npm-global/bin/bos ] 
+then
+	BOS="$HOME/.npm-global/bin/bos"
+else
+	BOS=`which bos`
+fi
+
 if [ "$BOS" == "" ] || [ ! -f $BOS ]
 then
 	# Potential Docker Installation

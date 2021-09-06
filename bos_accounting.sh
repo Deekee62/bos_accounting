@@ -19,7 +19,13 @@
 
 #Replace by actual path to bos if you run in docker
 
-BOS=`which bos`
+if [ -f $HOME/.npm-global/bin/bos ] 
+then
+	BOS="$HOME/.npm-global/bin/bos"
+else
+	BOS=`which bos`
+fi
+
 if [ "$BOS" == "" ] || [ ! -f $BOS ]
 then
 	# Potential Docker Installation
@@ -63,5 +69,5 @@ k_netearned=`printf "%08d" $((10#$c_earned-10#$d_paid-10#$e_chainpaid))`
 #
 # Print year, time, local channel balance, forwarded amount, % forwarded, fees earned ppm, fees paid ppm, fees net ppm, amount fees earned, amount fees paid, amount chain fees, amount fees net
 #
-printf "%(%Y-%m-%d)T    %(%T)T    "$a_local"    "$b_routed"    "$f_pcrouted"%%    "$g_ppmearned"ppm    "$h_ppmpaid"ppm    "$i_ppmnet"ppm    "$c_earned"    -"$d_paid"    -"$e_chainpaid"    "$k_netearned"\n"
+printf "%(%Y-%m-%d)T    %(%T)T    "$a_local"    "$b_routed"    "$f_pcrouted"%%    "$g_ppmearned" ppm   "$h_ppmpaid" ppm   "$i_ppmnet" ppm   "$c_earned"    -"$d_paid"    -"$e_chainpaid"    "$k_netearned"\n"
 

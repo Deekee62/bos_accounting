@@ -74,6 +74,3 @@ printf "    "$a_local"    "$b_routed"    "$f_pcrouted"%%";
 printf "   %4d ppm %4d ppm %4d ppm" $g_ppmearned $h_ppmpaid $i_ppmnet; 
 printf "   "$c_earned"    -"$d_paid"    -"$e_chainpaid"    "$k_netearned;
 printf "\n";
-#2021-09-08    06:40:38    146602961    30733475    25.00%    229 ppm  148 ppm   69 ppm   00033625    -00021745    -00001697    00010183
-#2021-09-07    23:55:47    146596372    25283687    20.00%    182 ppm  147 ppm   23 ppm   00026747    -00021656    -00001697    00003394
-#2021-09-08    06:51:33    146602961    30733475    25.00%    229 ppm  148 ppm   69 ppm   00033625    -00021745    -00001697    00010183

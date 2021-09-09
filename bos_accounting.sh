@@ -34,7 +34,7 @@ fi
 #BOS=user_specific_path for bos
 
 # Get local channel balance
-a_local="$($BOS balance --detailed | grep offchain |  awk -F : '{gsub(/^[ \t]+/, "", $2);print $2}' | sed 's/\.//g' | sed -r -e 's/[[:cntrl:]]\[[0-9]{1,3}m//g' -e 's/\n/ /g' | tr -d '\r')"
+a_local="$($BOS balance --detailed | grep offchain_balance |  awk -F : '{gsub(/^[ \t]+/, "", $2);print $2}' | sed 's/\.//g' | sed -r -e 's/[[:cntrl:]]\[[0-9]{1,3}m//g' -e 's/\n/ /g' | tr -d '\r')"
 #
 # Get total forwarded amount of sats for the last 7 days
 b_routed="$($BOS chart-fees-earned --forwarded --days 7 | /bin/grep 'Total:' | /usr/bin/awk '{print $8}' | /bin/sed -r -e 's/[[:cntrl:]]\[[0-9]{1,3}m//g' -e 's/\n/ /g' -e 's/^0.//' | tr -d '\r')"
@@ -69,5 +69,11 @@ k_netearned=`printf "%08d" $((10#$c_earned-10#$d_paid-10#$e_chainpaid))`
 #
 # Print year, time, local channel balance, forwarded amount, % forwarded, fees earned ppm, fees paid ppm, fees net ppm, amount fees earned, amount fees paid, amount chain fees, amount fees net
 #
-printf "%(%Y-%m-%d)T    %(%T)T    "$a_local"    "$b_routed"    "$f_pcrouted"%%    "$g_ppmearned" ppm   "$h_ppmpaid" ppm   "$i_ppmnet" ppm   "$c_earned"    -"$d_paid"    -"$e_chainpaid"    "$k_netearned"\n"
-
+printf "%(%Y-%m-%d)T    %(%T)T";
+printf "    "$a_local"    "$b_routed"    "$f_pcrouted"%%";
+printf "   %4d ppm %4d ppm %4d ppm" $g_ppmearned $h_ppmpaid $i_ppmnet; 
+printf "   "$c_earned"    -"$d_paid"    -"$e_chainpaid"    "$k_netearned;
+printf "\n";
+#2021-09-08    06:40:38    146602961    30733475    25.00%    229 ppm  148 ppm   69 ppm   00033625    -00021745    -00001697    00010183
+#2021-09-07    23:55:47    146596372    25283687    20.00%    182 ppm  147 ppm   23 ppm   00026747    -00021656    -00001697    00003394
+#2021-09-08    06:51:33    146602961    30733475    25.00%    229 ppm  148 ppm   69 ppm   00033625    -00021745    -00001697    00010183

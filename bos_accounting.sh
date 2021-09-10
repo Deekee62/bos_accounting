@@ -53,11 +53,11 @@ e_chainpaid="$($BOS chart-chain-fees  --days 7 | grep 'Total:' | awk '{print $10
 f_pcrouted=`printf "%0.2f" $((100/(10#$a_local/10#$b_routed)))`
 #
 # Calculate the ppm of the fees earned compared to the local channel balance for the last 7 days
-g_ppmearned=$((1000000/(10#$a_local/10#$c_earned)))
+g_ppmearned=$((1000000/$([[ $c_earned == 00000000 ]] && echo $((10#$a_local)) || echo $((10#$a_local/10#$c_earned))))
 #
 # Calculate the ppm of the fees paid compared to the local channel balance for the last 7 days
 #
-h_ppmpaid=$((1000000/(10#$a_local/10#$d_paid)))
+h_ppmpaid=$((1000000/$([[ $d_paid == 00000000 ]] && echo $((10#$a_local)) || echo $((10#$a_local/10#$d_paid)))))
 #
 # Calculate the ppm of the net fees paid compared to the local channel balance for the last 7 days
 #

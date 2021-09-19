@@ -37,13 +37,13 @@ fi
 a_local="$($BOS balance --detailed | grep offchain_balance |  awk -F : '{gsub(/^[ \t]+/, "", $2);print $2}' | sed 's/\.//g' | sed -r -e 's/[[:cntrl:]]\[[0-9]{1,3}m//g' -e 's/\n/ /g' | tr -d '\r')"
 #
 # Get total forwarded amount of sats for the last 7 days
-b_routed="$($BOS chart-fees-earned --forwarded --days 7 | /bin/grep 'Total:' | /usr/bin/awk '{print $8}' | /bin/sed -r -e 's/[[:cntrl:]]\[[0-9]{1,3}m//g' -e 's/\n/ /g' -e 's/^0.//' | tr -d '\r')"
+b_routed="$($BOS chart-fees-earned --forwarded --days 7 | grep 'Total:' | awk '{print $8}' | sed -r -e 's/[[:cntrl:]]\[[0-9]{1,3}m//g' -e 's/\n/ /g' -e 's/^0.//' | tr -d '\r')"
 #
 # Get the total amount of fees earned in the last 7 days
-c_earned="$($BOS chart-fees-earned  --days 7 | /bin/grep 'Total:' | /usr/bin/awk '{print $8}' | /bin/sed -r -e 's/[[:cntrl:]]\[[0-9]{1,3}m//g' -e 's/\n/ /g' -e s'/^0.//' | tr -d '\r')"
+c_earned="$($BOS chart-fees-earned  --days 7 | grep 'Total:' | awk '{print $8}' | sed -r -e 's/[[:cntrl:]]\[[0-9]{1,3}m//g' -e 's/\n/ /g' -e s'/^0.//' | tr -d '\r')"
 #
 # Get the total amount of fees paid in the last 7 days
-d_paid="$($BOS chart-fees-paid  --days 7 | /bin/grep 'Total:' | /usr/bin/awk '{print $9}' | /bin/sed -r -e 's/[[:cntrl:]]\[[0-9]{1,3}m//g' -e 's/\n/ /g' -e 's/^0.//' | tr -d '\r')"
+d_paid="$($BOS chart-fees-paid  --days 7 | grep 'Total:' | awk '{print $9}' | sed -r -e 's/[[:cntrl:]]\[[0-9]{1,3}m//g' -e 's/\n/ /g' -e 's/^0.//' | tr -d '\r')"
 #
 # Get the total amount of onchain fees paid in the last 7 days
 #

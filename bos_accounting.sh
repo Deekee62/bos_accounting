@@ -50,7 +50,7 @@ d_paid="$($BOS chart-fees-paid  --days 7 | grep 'Total:' | awk '{print $9}' | se
 e_chainpaid="$($BOS chart-chain-fees  --days 7 | grep 'Total:' | awk '{print $10}' | sed -r -e 's/[[:cntrl:]]\[[0-9]{1,3}m//g' -e 's/\n/ /g' -e 's/^0.//' |  tr -d '\r')"
 #
 # Calculate the percentage of the forwared sats compared to the local channel balance for the last 7 days
-f_pcrouted=`printf "%0.2f" $((100/(10#$a_local/10#$b_routed)))`
+f_pcrouted=$((100/(10#$a_local/10#$b_routed)))
 #
 # Calculate the ppm of the fees earned compared to the local channel balance for the last 7 days
 g_ppmearned=$((1000000/$([[ $c_earned == 00000000 ]] && echo $((10#$a_local)) || echo $((10#$a_local/10#$c_earned)))))
@@ -70,7 +70,8 @@ k_netearned=`printf "%08d" $((10#$c_earned-10#$d_paid-10#$e_chainpaid))`
 # Print year, time, local channel balance, forwarded amount, % forwarded, fees earned ppm, fees paid ppm, fees net ppm, amount fees earned, amount fees paid, amount chain fees, amount fees net
 #
 printf "%(%Y-%m-%d)T    %(%T)T";
-printf "    "$a_local"    "$b_routed"    "$f_pcrouted"%%";
+printf "    "$a_local"    "$b_routed"   ";
+printf "%#6.2f%%" $f_pcrouted;
 printf "   %4d ppm %4d ppm %4d ppm" $g_ppmearned $h_ppmpaid $i_ppmnet; 
 printf "   "$c_earned"    -"$d_paid"    -"$e_chainpaid"    "$k_netearned;
 printf "\n";

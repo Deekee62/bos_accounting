@@ -50,7 +50,7 @@ d_paid="$($BOS chart-fees-paid  --days 7 | /bin/grep 'Total:' | /usr/bin/awk '{p
 e_chainpaid="$($BOS chart-chain-fees  --days 7 | grep 'Total:' | awk '{print $10}' | sed -r -e 's/[[:cntrl:]]\[[0-9]{1,3}m//g' -e 's/\n/ /g' -e 's/^0.//' |  tr -d '\r')"
 #
 # Calculate the percentage of the forwared sats compared to the local channel balance for the last 7 days
-f_pcrouted=$((100/(10#$a_local/10#$b_routed)))
+f_pcrouted=$((100*10#$b_routed/10#$a_local))
 #
 # Calculate the ppm of the fees earned compared to the local channel balance for the last 7 days
 g_ppmearned=$((1000000/(10#$a_local/10#$c_earned)))

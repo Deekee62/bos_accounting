@@ -57,7 +57,7 @@ else
 	f_pcrouted=$((100*10#$b_routed/10#$a_local))
 fi
 
-echo "----->"$f_pcrouted"-"$b_routed"-"$a_local
+#echo "----->"$f_pcrouted"-"$b_routed"-"$a_local
 
 #
 # Calculate the ppm of the fees earned compared to the local channel balance for the last 7 days

@@ -10,7 +10,7 @@
 #
 # Add the following in crontab to run regulary. Change path as appropriate
 # 55 23 * * * ~/bos_accounting/bos_accounting.sh >> ~/bos_accounting.log 2>&1
-# Version: 0.0.7
+# Version: 0.0.8
 # Author: Dirk Krienbuehl https://t.me/Deekee62
 # Additions : VS https://t.me/BhaagBoseDk : Removing lncli and icreasing compatibilities with other installations.
 #
@@ -32,6 +32,14 @@ then
 	BOS="docker run --rm --network=host --add-host=umbrel.local:10.21.21.9 -v $HOME/.bos:/home/node/.bos -v $HOME/umbrel/lnd:/home/node/.lnd:ro alexbosworth/balanceofsatoshis"
 fi
 #BOS=user_specific_path for bos
+
+# Check bos
+bos_ver=`$BOS -V`
+if [[ "bos_ver" == "" ]]
+then
+ echo "Error -1 : Unable to run bos. Check $BOS"
+ exit -1
+fi
 
 # Get local channel balance
 a_local="$($BOS balance --detailed | grep offchain_balance |  awk -F : '{gsub(/^[ \t]+/, "", $2);print $2}' | sed 's/\.//g' | sed -r -e 's/[[:cntrl:]]\[[0-9]{1,3}m//g' -e 's/\n/ /g' | tr -d '\r')"

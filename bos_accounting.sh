@@ -57,6 +57,11 @@ d_paid="$($BOS chart-fees-paid  --days 7 | grep 'Total:' | awk '{print $9}' | se
 #
 e_chainpaid="$($BOS chart-chain-fees  --days 7 | grep 'Total:' | awk '{print $10}' | sed -r -e 's/[[:cntrl:]]\[[0-9]{1,3}m//g' -e 's/\n/ /g' -e 's/^0.//' |  tr -d '\r')"
 #
+# if e-chainpad is empty set default value
+if [ -z "$e_chainpaid" ]
+then e_chainpaid="0000000"
+fi
+#
 # Calculate the percentage of the forwared sats compared to the local channel balance for the last 7 days
 if [ -f /usr/bin/bc ]
 then
@@ -88,6 +93,6 @@ k_netearned=`printf "%08d" $((10#$c_earned-10#$d_paid-10#$e_chainpaid))`
 printf "%(%Y-%m-%d)T    %(%T)T";
 printf "    "$a_local"    "$b_routed"   ";
 printf "%#6.2f%%" $f_pcrouted;
-printf "   %4d ppm %4d ppm %4d ppm" $g_ppmearned $h_ppmpaid $i_ppmnet; 
+printf "   %4d ppm %4d ppm %4d ppm" $g_ppmearned $h_ppmpaid $i_ppmnet;
 printf "   "$c_earned"    -"$d_paid"    -"$e_chainpaid"    "$k_netearned;
 printf "\n";

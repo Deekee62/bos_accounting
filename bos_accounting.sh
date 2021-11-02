@@ -59,7 +59,7 @@ e_chainpaid="$($BOS chart-chain-fees  --days 7 | grep 'Total:' | awk '{print $10
 #
 # if e-chainpad is empty set default value
 if [ -z "$e_chainpaid" ]
-then e_chainpaid="0000000"
+then e_chainpaid="00000000"
 fi
 #
 # Calculate the percentage of the forwared sats compared to the local channel balance for the last 7 days

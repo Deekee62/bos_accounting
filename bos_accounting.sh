@@ -16,7 +16,7 @@
 # Additions : DK https://t.me/Deekee62 : Added command line argument, now the days can be chosen
 # ------------------------------------------------------------------------------------------------
 #
-# Check if arguments have been is passed
+# Check if arguments have been passed
 
 if [ "$#" -eq  "0" ]
   then
@@ -88,7 +88,7 @@ if [ -f /usr/bin/bc ]
 then
 	f_pcrouted=`echo "scale=2; 100*$b_routed/$a_local" | bc -q`
 else
-	f_pcrouted=$((100*10#$b_routed/10#$a_local))p
+	f_pcrouted=$((100*10#$b_routed/10#$a_local))
 fi
 
 #echo "----->"$f_pcrouted"-"$b_routed"-"$a_local

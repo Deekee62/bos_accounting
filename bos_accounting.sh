@@ -20,7 +20,7 @@
 
 if [ "$#" -eq  "0" ]
   then
-    printf "No argument supplied, using 7 day average as default\n" >&2
+#    printf "No argument supplied, using 7 day average as default\n" >&2
     set 7
 
   elif [[ $# -ne 1 ]]; then

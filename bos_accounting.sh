@@ -10,7 +10,7 @@
 #
 # Add the following in crontab to run regulary. Change path as appropriate
 # 55 23 * * * ~/bos_accounting/bos_accounting.sh >> ~/bos_accounting.log 2>&1
-# Version: 0.0.9
+# Version: 0.0.10
 # Author: Dirk Krienbuehl https://t.me/Deekee62
 # Additions : VS https://t.me/BhaagBoseDk : Removing lncli and increasing compatibilities with other installations.
 # Additions : DK https://t.me/Deekee62 : Added command line argument, now the days can be chosen

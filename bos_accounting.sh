@@ -10,7 +10,7 @@
 #
 # Add the following in crontab to run regulary. Change path as appropriate
 # 55 23 * * * ~/bos_accounting/bos_accounting.sh >> ~/bos_accounting.log 2>&1
-# Version: 0.0.9
+# Version: 0.0.10
 # Author: Dirk Krienbuehl https://t.me/Deekee62
 # Additions : VS https://t.me/BhaagBoseDk : Removing lncli and increasing compatibilities with other installations.
 # Additions : DK https://t.me/Deekee62 : Added command line argument, now the days can be chosen
@@ -112,8 +112,8 @@ k_netearned=`printf "%08d" $((10#$c_earned-10#$d_paid-10#$e_chainpaid))`
 # Print year, time, local channel balance, forwarded amount, % forwarded, fees earned ppm, fees paid ppm, fees net ppm, amount fees earned, amount fees paid, amount chain fees, amount fees net
 #
 printf "%(%Y-%m-%d)T    %(%T)T";
-printf "    "$a_local"    "$b_routed"   ";
-printf "%#6.2f%%" $f_pcrouted;
+printf "%#13d%#12d" $a_local $b_routed;
+printf "   %#6.2f%%" $f_pcrouted;
 printf "   %4d ppm %4d ppm %4d ppm" $g_ppmearned $h_ppmpaid $i_ppmnet;
 printf "   "$c_earned"    -"$d_paid"    -"$e_chainpaid"    "$k_netearned;
 printf "\n";
